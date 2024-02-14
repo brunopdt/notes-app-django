@@ -18,7 +18,7 @@ export const NotePage = () => {
   }, [id])
 
   const updateNote = useCallback(async (): Promise<void> => {
-    await fetch(`${config.BASE_URL}/api/notes/${id}/update/`, {
+    await fetch(`${config.BASE_URL}/api/notes/${id}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ export const NotePage = () => {
   }, [id, note])
 
   const createNote = useCallback(async (): Promise<void> => {
-    await fetch(`${config.BASE_URL}/api/notes/create/`, {
+    await fetch(`${config.BASE_URL}/api/notes/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ export const NotePage = () => {
   )
 
   const handleDeleteNote = useCallback(async (): Promise<void> => {
-    await fetch(`${config.BASE_URL}/api/notes/${id}/delete/`, {
+    await fetch(`${config.BASE_URL}/api/notes/${id}/`, {
       method: 'DELETE'
     })
     navigate('/')
