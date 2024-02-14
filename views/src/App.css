@@ -88,18 +88,9 @@ a {
   cursor: pointer;
 }
 
-.app-header button > svg {
-  fill: var(--color-dark);
-  height: 25px;
-  width: 25px;
-  object-fit: cover;
-}
-
 .app-body {
   padding: 16px;
 }
-
-/* NOTES STYLES */
 
 .notes-header {
   display: flex;
