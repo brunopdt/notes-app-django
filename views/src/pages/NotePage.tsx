@@ -9,13 +9,15 @@ export const NotePage = () => {
   const navigate = useNavigate()
   const [note, setNote] = useState<INote | undefined>(undefined)
 
-  const getNote = useCallback(async () => {
+  const getNote = useCallback(async (): Promise<void> => {
+    if (id === 'new') return
+
     const response = await fetch(`${config.BASE_URL}/api/notes/${id}`)
     const data: INote = await response.json()
     setNote(data)
   }, [id])
 
-  const updateNote = useCallback(async () => {
+  const updateNote = useCallback(async (): Promise<void> => {
     await fetch(`${config.BASE_URL}/api/notes/${id}/update/`, {
       method: 'PUT',
       headers: {
@@ -25,8 +27,18 @@ export const NotePage = () => {
     })
   }, [id, note])
 
+  const createNote = useCallback(async (): Promise<void> => {
+    await fetch(`${config.BASE_URL}/api/notes/create/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    })
+  }, [note])
+
   const handleNoteChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
       setNote({
         ...note,
         body: e.target.value
@@ -35,7 +47,7 @@ export const NotePage = () => {
     [note]
   )
 
-  const handleDeleteNote = useCallback(async () => {
+  const handleDeleteNote = useCallback(async (): Promise<void> => {
     await fetch(`${config.BASE_URL}/api/notes/${id}/delete/`, {
       method: 'DELETE'
     })
@@ -43,9 +55,11 @@ export const NotePage = () => {
   }, [id, navigate])
 
   const handleBackClick = useCallback(() => {
-    updateNote()
+    if (id !== 'new' && !note?.body) handleDeleteNote()
+    else if (id !== 'new') updateNote()
+    else if (id === 'new' && note?.body) createNote()
     navigate('/')
-  }, [navigate, updateNote])
+  }, [createNote, handleDeleteNote, id, navigate, note?.body, updateNote])
 
   useEffect(() => {
     getNote()
@@ -57,9 +71,9 @@ export const NotePage = () => {
         <h3>
           <ArrowLeft onClick={handleBackClick} />
         </h3>
-        <button onClick={handleDeleteNote}>Delete</button>
+        {id !== 'new' && <button onClick={handleDeleteNote}>Deletar</button>}
       </div>
-      <textarea onChange={handleNoteChange} defaultValue={note?.body} />
+      <textarea onChange={handleNoteChange} value={note?.body} />
     </div>
   )
 }
