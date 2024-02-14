@@ -1,5 +1,7 @@
-import React from 'react'
-
 export const Header = () => {
-  return <header>Header</header>
+  return (
+    <div className="app-header">
+      <h1>Note list</h1>
+    </div>
+  )
 }

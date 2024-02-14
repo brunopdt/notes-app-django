@@ -1,12 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { config } from '../config.ts'
-
-interface INote {
-  id: number
-  body: string
-  created_at: string
-  updated_at: string
-}
+import { INote } from '../interfaces/note.ts'
+import { ListItem } from '../components/ListItem.tsx'
 
 export const NotesListPage = () => {
   const [notes, setNotes] = useState<INote[] | []>([])
@@ -22,14 +17,14 @@ export const NotesListPage = () => {
   }, [getNotes])
 
   return (
-    <div>
+    <div className="notes">
+      <div className="notes-header">
+        <h2 className="notes-title">&#9782; Notes</h2>
+        <p className="notes-count">{notes.length}</p>
+      </div>
       <div className="notes-list">
         {notes.map((note: INote) => (
-          <div key={note.id} className="note">
-            <p>{note.body}</p>
-            <p>Created at: {note.created_at}</p>
-            <p>Updated at: {note.updated_at}</p>
-          </div>
+          <ListItem key={note.id} note={note} />
         ))}
       </div>
     </div>
