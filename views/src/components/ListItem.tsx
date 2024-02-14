@@ -7,7 +7,9 @@ interface IListItemParams {
 
 export const ListItem = ({ note }: IListItemParams) => {
   const date = new Date(note.updated_at)
-  const time = `${date.getHours()}:${date.getMinutes()}`
+  const time = `${date.getHours()}:${
+    (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+  }`
 
   const getTitle = (): string =>
     note.body?.length > 40 ? note?.body.slice(0, 40) + '...' : note?.body
